@@ -10,9 +10,16 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { amount, category } = await request.json();
+  const { amount, category, date, time, location, description } = await request.json();
   const expense = await prisma.expense.create({
-    data: { amount, category },
+    data: { 
+      amount: parseFloat(amount), 
+      category, 
+      date: new Date(date), 
+      time, 
+      location, 
+      description 
+    },
   });
   return NextResponse.json(expense, { status: 201 });
 }

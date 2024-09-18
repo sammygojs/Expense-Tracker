@@ -17,7 +17,7 @@ const fetchExpenses = async (): Promise<Expense[]> => {
   return response.data;
 };
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const { data: expenses } = useQuery({
     queryKey: ['expenses'],
     queryFn: fetchExpenses
@@ -40,11 +40,31 @@ const Dashboard = () => {
     }, 0);
   };
 
+  const weeklyTotal = calculateTotal(expenses, 'week');
+  const monthlyTotal = calculateTotal(expenses, 'month');
+
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>This Week's Expenses: ${calculateTotal(expenses, 'week').toFixed(2)}</p>
-      <p>This Month's Expenses: ${calculateTotal(expenses, 'month').toFixed(2)}</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <dt className="text-sm font-medium text-gray-500 truncate">
+            This Week's Expenses
+          </dt>
+          <dd className="mt-1 text-3xl font-semibold text-gray-900">
+            ${weeklyTotal.toFixed(2)}
+          </dd>
+        </div>
+      </div>
+      <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <dt className="text-sm font-medium text-gray-500 truncate">
+            This Month's Expenses
+          </dt>
+          <dd className="mt-1 text-3xl font-semibold text-gray-900">
+            ${monthlyTotal.toFixed(2)}
+          </dd>
+        </div>
+      </div>
     </div>
   );
 };
